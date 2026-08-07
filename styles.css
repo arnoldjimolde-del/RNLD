@@ -292,6 +292,65 @@ section .title span{
     position: relative;
     padding-bottom: 8px;
 }
+
+.about .right .education{
+    color: white;
+    margin: 20px 5;
+    border-left: 3px solid cyan;
+    padding-left: 15px;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.about .right .edu-year{
+    color: cyan;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.about .right .edu-school{
+    color: rgb(250, 250, 250);
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.about .right .edu-degree{
+    color: rgb(200, 200, 200);
+    font-size: 15px;
+    margin-top: 2px;
+}
+
+.about .right .experience{
+    color: white;
+    margin: 10px 5;
+    border-left: 3px solid cyan;
+    padding-left: 15px;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.about .right .exp-year{
+    color: cyan;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.about .right .company{
+    color: rgb(250, 250, 250);
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.about .right .position{
+    color: rgb(200, 200, 200);
+    font-size: 15px;
+    margin-top: 2px;
+}
+
 /* sections lines */
 section .title span::before,
 section .title span::after{
@@ -338,6 +397,24 @@ section .topic{
     color: rgb(250, 250, 250);
     text-align: justify;
     
+}
+
+.about .boxes .box:hover{
+    background: cyan;
+    color: rgb(0, 0, 0);
+}
+.about .content .right .icon{
+    height: 50px;
+    width: 50px;
+    background-color: cyan;
+    border-radius: 20%;
+    text-align: center;
+    line-height: 50px;
+    font-size: 18px;
+    color: rgb(0, 0, 0);
+    margin: 20 auto 40px auto;
+    transition: all 1s ease;
+
 }
 
 section .button{
@@ -398,7 +475,7 @@ section .button button:hover{
     margin-left: 20px;
     font-size: 18px;
     font-weight: 500;
-margin: 0 6px;
+    margin: 0 8px;
 }
 .skills-details .boxes{
     width: 100%;
