@@ -590,7 +590,10 @@ section .button button:hover{
 }
 .portfolio-item:hover img{
     scale: 1.2;
+    cursor: pointer;
 }
+
+
 
 /*CONTACT ME SECTION*/
 .contact{
