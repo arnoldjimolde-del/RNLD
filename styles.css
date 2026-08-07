@@ -246,7 +246,7 @@ section .main-container{
 .content button{
     width: 50%;
     height: 6vh;
-    margin: 30px;
+    margin: 20px;
     background-color: cyan;
     color: rgb(0, 0, 0);
     border: none;
@@ -282,12 +282,13 @@ section .content{
 section .title{
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 80px;
 }
 
 section .title span{
+    margin-top: 20px;
     color: white;
-    font-size: 30px;
+    font-size: 50px;
     font-weight: 600;
     position: relative;
     padding-bottom: 8px;
@@ -511,6 +512,7 @@ section .button button:hover{
 }
 .services .boxes .box{
     margin: 20px 0;
+    width: 100%;
     width: calc(100% / 3 - 20px);
     text-align: center;
     border-radius: 12px;
@@ -548,6 +550,46 @@ section .button button:hover{
 .services .boxes .boc:hover .topic,
 .services .boxes .box:hover p{
     color: rgb(7, 6, 6);
+}
+.portfolio-title{
+    text-align: center;
+    margin: 50px 0 20px 0;
+}
+.portfolio-title span{
+    color: cyan;
+    font-size: 50px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.portfolio-gallery{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 15px;
+    overflow-x: auto;
+}
+
+.portfolio-item{
+    width: calc(100% / 5 - 15px);
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px black;
+}
+
+.portfolio-item img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.3s ease;
+}
+
+.portfolio-item:hover{
+    box-shadow: 0 0 50px cyan;
+}
+.portfolio-item:hover img{
+    scale: 1.2;
 }
 
 /*CONTACT ME SECTION*/
