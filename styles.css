@@ -175,8 +175,8 @@ section{
 section .main-container{
 
     display: flex;
-    justify-content: space-between;
-    padding-left: 100px;
+    justify-content: center;
+    padding-left: 200px;
     align-items: center;
 }
 .hero{
@@ -207,8 +207,8 @@ section .main-container{
 
 /* Circular profile photo frame in the hero */
 .main-container .image{
-    width: 500px;
-    height: 80vh;
+    width: 600px;
+    height: 90vh;
     border-radius: 100%;
     overflow: hidden;
    
@@ -515,7 +515,41 @@ section .button button:hover{
     color: rgb(6, 7, 7);
 }
 
+/* ===== SKILL LOADING RINGS ===== */
+.skills-details .circle,
+.skill .circle{
+    --percent: 0;
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 12px auto;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: conic-gradient(cyan calc(var(--percent) * 1%), rgba(255,255,255,0.15) 0);
+    filter: drop-shadow(0 0 8px cyan);
+}
 
+/* inner dark circle that turns the pie into a ring */
+.skill .circle::before{
+    content: '';
+    position: absolute;
+    inset: 10px;
+    border-radius: 50%;
+    background: #0b0b0b;
+}
+
+.skill .boxes .box .circle .per{
+    position: relative;
+    font-size: 24px;
+    font-weight: 600;
+    color: cyan;
+}
+
+.skill .boxes .box .topic{
+    font-size: 18px;
+    color: white;
+}
 /* ===================================================
    SKILLS SECTION — skill bars / percentage boxes
 =================================================== */
