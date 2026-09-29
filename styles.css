@@ -207,10 +207,10 @@ section .main-container{
 
 /* Circular profile photo frame in the hero */
 .main-container .image{
-    width: 600px;
+    width: 700px;
     height: 90vh;
     border-radius: 100%;
-    overflow: hidden;
+    
    
 }
 
