@@ -687,7 +687,7 @@ section .button button:hover{
 /* Horizontal scrollable strip of gallery thumbnails */
 .portfolio-gallery{
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
     overflow-x: auto;
