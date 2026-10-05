@@ -46,13 +46,6 @@ body{
     align-items: center;
  }
 
- /* Site logo text ("RNLD" or similar) */
- .logo{
-    color: white;
-    font-size: 2rem;
-    font-weight: bold;
- }
-
  /* Highlighted part of the logo (the cyan letter/word) */
  .logo img{
     height: 150px;
