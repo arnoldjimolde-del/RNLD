@@ -43,16 +43,18 @@ body{
     height: 100%;
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    align-items: end;
  }
 
  /* Highlighted part of the logo (the cyan letter/word) */
  .logo img{
-    height: 150px;
+    height: 100px;
     width: auto;
     display: block;
     position: relative;
-    top: 80px;
+    top: 20px;
+    left: -160px;
+    transform: translateX(10px);
  }
 
  /* ===================================================
@@ -75,11 +77,11 @@ body{
     cursor: pointer;
     position: absolute;
     right: 15px;
-    top: 20px;
+    top: 25px;
     color: rgb(253, 253, 253);
     opacity: 100;
     pointer-events: auto;
-    font-size:clamp(2.5rem, 0.5rem + 5vw, 3rem);
+    font-size:clamp(rem, 1.rem + 5vw, 3rem);
  }
 
  /* Desktop nav links row */
@@ -94,7 +96,7 @@ body{
  =================================================== */
  .nav-container .links a{
     position: relative;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: rgb(253, 253, 253);
     margin: 0 20px;
     text-decoration: none;
@@ -131,12 +133,13 @@ body{
     z-index: 100;
     position: absolute;
     top: 0;
-    transform: translateY(-500px);
+    right: 0%;
+    transform: translateY(-700px);
     width: 100%;
     height: auto;
     backdrop-filter: blur(4px) brightness(40%);
     box-shadow: 0 0 20px rgb(0, 255, 255);
-    transition: 0.2s linear;
+    transition: 0.1s linear;
 }
 
 /* Links inside the mobile dropdown, stacked vertically */
@@ -145,9 +148,9 @@ body{
     color: rgb(250, 250, 250);
     text-decoration: none;
     justify-content: center;
-    padding: 15px 0;
+    padding: 15px 0px;
     align-items: center;
-    transition: 0.2s linear;
+    transition: 0.1s linear;
 }
 
 .dropdown .links a:hover{
@@ -172,7 +175,7 @@ section .main-container{
 
     display: flex;
     justify-content: start;
-    padding-left: 200px;
+    padding-left: 180px;
     align-items: center;
 }
 .hero{
@@ -271,7 +274,7 @@ section .main-container{
 
 /* Gentle pulsing/breathing animation when hovering the photo */
 .main-container .image:hover{
-    animation: animate 1.5s ease-in-out infinite;
+    animation: animate 2s ease-in-out infinite;
 }
 
 /* Keyframes used by the hover animation above (grow then shrink) */
@@ -295,7 +298,7 @@ section .main-container{
 }
 
 .content h1{
-    font-size: clamp(1rem, 1rem + 5vw, 1.8rem);
+    font-size: clamp(3rem, 1rem + 5vw, 1.8rem);
 }
 
 /* Highlighted name/word inside the h1 */
