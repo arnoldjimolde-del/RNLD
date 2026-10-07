@@ -1,966 +1,378 @@
-/* ===================================================
-   FONT IMPORT — loads the "Poppins" font from Google Fonts
-=================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Poppins%3Awght%40100%3B200%3B300%3B400%3B500%3B600&display=swap%27%29%3B');
-
-/* ===================================================
-   GLOBAL RESET — removes default browser spacing,
-   sets a consistent font, and enables smooth scrolling
-   for anchor links (e.g. clicking a nav link)
-=================================================== */
+/* ===== BASE ===== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    text-decoration: none;
-    scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+}
+html { scroll-behavior: smooth; }
+body { background: #000; overflow-x: hidden; }
+section { min-height: 90vh; }
+section .content { width: 80%; margin: 0 auto; }
+
+/* same translucent backdrop for every section except the hero */
+.about, .skill, .services, .contact { background: rgba(0, 0, 0, .5); }
+
+/* ===== NAVBAR ===== */
+nav { height: 10vh; }
+.nav-container {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: end;
+}
+.logo img {
+  display: block;
+  height: 100px;
+  position: relative;
+  top: 20px;
+  left: 80px;
+  transform: translateX(-100px);
+}
+.nav-container .links { display: flex; }
+.nav-container .links a {
+  position: relative;
+  margin: 0 20px;
+  color: #fdfdfd;
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: .3s linear;
+}
+.nav-container .links a::before {          /* sliding underline */
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: cyan;
+  transition: .2s linear;
+}
+.nav-container .links a:hover::before { width: 100%; }
+.nav-container .links a:hover { color: #026e8a; }
+
+/* hamburger + close icons */
+.hamburg, .cancel {
+  position: absolute;
+  cursor: pointer;
+  color: #fdfdfd;
+  font-size: clamp(2.5rem, .5rem + 5vw, 3rem);
+}
+.hamburg { top: 25px; right: 15px; }
+.cancel  { top: 20px; right: 50px; }
+
+/* mobile dropdown (slides down when .open is added by script.js) */
+.dropdown {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  width: 100%;
+  transform: translateY(-150%);
+  visibility: hidden;
+  backdrop-filter: blur(4px) brightness(40%);
+  box-shadow: 0 0 20px cyan;
+  transition: .1s linear;
+}
+.dropdown.open { transform: none; visibility: visible; }
+.dropdown .links a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0;
+  color: #fafafa;
+  transition: .1s linear;
+}
+.dropdown .links a:hover { color: #000; background: cyan; }
+
+/* ===== HERO ===== */
+section .main-container {
+  display: flex;
+  align-items: center;
+  padding-left: 180px;
+}
+.bg-video {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+.main-container::before {                  /* dark overlay on the video */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .5);
+  z-index: -1;
+}
+.main-container .image {
+  position: relative;
+  width: 700px;
+  height: 90vh;
+  border-radius: 100%;
+}
+.main-container .image img { position: relative; z-index: 1; width: 100%; }
+
+/* Glow + shine on the hero photo.
+   These two infinite animations repaint a big image every frame --
+   if the page lags, delete this whole block (down to the glowSweep keyframes) to test. */
+.main-container .image::before,
+.main-container .image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: glowSweep 3s ease-in-out infinite;
+}
+.main-container .image::before {
+  z-index: 0;
+  background: url("RNLD_MAIN.png") top left / 100% auto no-repeat;
+  filter: blur(5px) drop-shadow(0 0 5px #fafafa);
+  -webkit-mask: linear-gradient(110deg, transparent 35%, #000 50%, transparent 65%) 100% 0 / 250% 100% no-repeat;
+          mask: linear-gradient(110deg, transparent 35%, #000 50%, transparent 65%) 100% 0 / 250% 100% no-repeat;
+}
+.main-container .image::after {
+  z-index: 2;
+  background: linear-gradient(110deg, transparent 40%, rgba(255, 255, 255, .55) 50%, transparent 40%) 100% 0 / 250% 100% no-repeat;
+  -webkit-mask: url("RNLD_MAIN.png") top left / 100% auto no-repeat;
+          mask: url("RNLD_MAIN.png") top left / 100% auto no-repeat;
+  mix-blend-mode: screen;
+}
+@keyframes glowSweep {
+  0%       { background-position: 100% 0; -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+  60%, 100% { background-position: 0 0;    -webkit-mask-position: 0 0;    mask-position: 0 0; }
 }
 
-/* ===================================================
-   BODY — sets the page's base background and prevents
-   horizontal scrollbars caused by animations/overflow
-=================================================== */
-body{
-    width: 100%;
-    height: auto;
-    background-color: rgb(0, 0, 0, 6);
-    overflow-x: hidden;
+.main-container .image:hover { animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 50% { scale: 1.05; } }
+
+.main-container .content { width: 40%; color: #fdfdfd; }
+.content h1 { font-size: 3rem; }
+.content h1 span { color: cyan; font-size: 80px; text-shadow: 0 0 10px cyan; }
+.content .typewriter {
+  color: #67c2ff;
+  font-size: clamp(1rem, 1rem + 5vw, 2.5rem);
+  font-weight: 600;
+  font-style: italic;
+}
+.content p { margin: 10px 0; }
+
+.social-links i {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin: 5px 15px;
+  border: .2rem solid cyan;
+  border-radius: 50%;
+  color: cyan;
+  font-size: 1.5rem;
+  transition: .2s linear;
+}
+.social-links i:hover {
+  scale: 1.3;
+  color: #000;
+  background: cyan;
+  filter: drop-shadow(0 0 10px cyan);
 }
 
- /* ===================================================
-    NAVBAR — the top navigation bar container
- =================================================== */ 
- nav{
-    width: 100%;
-    height: 10vh;
-
- }
-
- /* Flex row that centers/spaces out the logo + links */
- .nav-container{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: end;
- }
-
- /* Highlighted part of the logo (the cyan letter/word) */
- .logo img{
-    height: 100px;
-    width: auto;
-    display: block;
-    position: relative;
-    top: 20px;
-    left: -160px;
-    transform: translateX(10px);
- }
-
- /* ===================================================
-    HAMBURGER MENU — mobile menu open/close icons
-    (hidden on desktop, shown on small screens via media query)
- =================================================== */
- .hamburg, 
- .cancel{
-    cursor: pointer;
-    position: absolute;
-    right: 50px;
-    top: 20px;
-    color: rgb(248, 248, 248);
-    opacity: 100;
-    pointer-events: auto;
-    font-size:clamp(2.5rem, 0.5rem + 5vw, 3rem);
- }
-  .hamburg, 
- .dropdown{
-    cursor: pointer;
-    position: absolute;
-    right: 15px;
-    top: 25px;
-    color: rgb(253, 253, 253);
-    opacity: 100;
-    pointer-events: auto;
-    font-size:clamp(rem, 1.rem + 5vw, 3rem);
- }
-
- /* Desktop nav links row */
- .nav-container .links{
-    display: flex;
-
- }
- /* ===================================================
-    NAV LINK UNDERLINE ANIMATION (PANEL)
-    Each link gets an invisible bottom border that grows
-    on hover, creating the sliding underline effect
- =================================================== */
- .nav-container .links a{
-    position: relative;
-    font-size: 1.5rem;
-    color: rgb(253, 253, 253);
-    margin: 0 20px;
-    text-decoration: none;
-    font-weight: 550;
-    transition: 0.3s linear;
- }
-
-/* The underline bar itself (starts at 0% width) */
-.nav-container .links a::before{
-    position: absolute;
-    content: "";
-    bottom: -3px;
-    left: 0;
-    width: 0%;
-    height: 3px;
-    background-color: cyan;
-    transition: 0.2s linear;
+/* ===== BUTTONS ===== */
+.content button {                           /* hero button (and base for the rest) */
+  width: 50%;
+  height: 6vh;
+  margin: 20px;
+  background: cyan;
+  color: #000;
+  border: 0;
+  border-radius: 5px;
+  font-size: 200%;
+  font-weight: 700;
+  transition: .2s linear;
 }
-
-/* On hover, underline grows to full width */
-.nav-container .links a:hover::before{
-    width: 100%;
+.content button:hover {
+  scale: 1.1;
+  color: cyan;
+  border: 2px solid cyan;
+  background: transparent;
+  font-weight: 700;
+  box-shadow: 0 0 40px cyan;
+  cursor: pointer;
 }
-
-.nav-container .links a:hover{
-    color:rgb(2, 110, 138);
+section .button { margin: 16px 0; }         /* About + Contact buttons */
+section .button button {
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  font-size: 25px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all .4s ease;
 }
+section .button button:hover { border-color: cyan; background: #fff; color: #060707; }
 
-/* ===================================================
-   MOBILE DROPDOWN MENU — the panel that slides down
-   when the hamburger icon is tapped on small screens
-=================================================== */
-.dropdown{
-    z-index: 100;
-    position: absolute;
-    top: 0;
-    right: 0%;
-    transform: translateY(-700px);
-    width: 100%;
-    height: auto;
-    backdrop-filter: blur(4px) brightness(40%);
-    box-shadow: 0 0 20px rgb(0, 255, 255);
-    transition: 0.1s linear;
+/* ===== SECTION TITLES ===== */
+section .title { display: flex; justify-content: center; margin-bottom: 80px; }
+section .title span {
+  position: relative;
+  margin-top: 20px;
+  padding-bottom: 8px;
+  color: #fff;
+  font-size: 50px;
+  font-weight: 600;
 }
-
-/* Links inside the mobile dropdown, stacked vertically */
-.dropdown .links a{
-    display: flex;
-    color: rgb(250, 250, 250);
-    text-decoration: none;
-    justify-content: center;
-    padding: 15px 0px;
-    align-items: center;
-    transition: 0.1s linear;
-}
-
-.dropdown .links a:hover{
-    color: black;
-    background-color: cyan;
-}
-
-/* ===================================================
-   SECTION BASE — shared default sizing for every
-   <section> on the page (About, Skills, Services, etc.)
-=================================================== */
-section{
-    width: 100%;
-    min-height: 90vh;
-}
-
-/* ===================================================
-   HERO SECTION — the very first section people see
-   (profile picture + intro text + social icons)
-=================================================== */
-section .main-container{
-
-    display: flex;
-    justify-content: start;
-    padding-left: 180px;
-    align-items: center;
-}
-.hero{
-    position: relative;
-    overflow: hidden;
-}
-
-/* Full-screen background video ("smoke" effect) behind the hero */
-.bg-video{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -2;
-}
-
-/* Semi-transparent dark overlay on top of the video so text is readable */
-.main-container::before{
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: -1;
-}
-
-/* Circular profile photo frame in the hero */
-.main-container .image{
-    width: 700px;
-    height: 90vh;
-    border-radius: 100%;
-    
-   
-}
-.main-container .image{
-    position: relative;
-}
-
-/* keep the real image above the glow layer */
-.main-container .image img{
-    position: relative;
-    z-index: 1;
-}
-
-/* soft glow that spills past the edges of the subject */
-.main-container .image::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-
-    background: url("RNLD_MAIN.png") top left / 100% auto no-repeat;
-    filter: blur(5px) brightness(1) drop-shadow(0 0 5px rgb(250, 250, 250));
-
-    -webkit-mask: linear-gradient(110deg, transparent 35%, #000 50%, transparent 65%) 100% 0 / 250% 100% no-repeat;
-            mask: linear-gradient(110deg, transparent 35%, #000 50%, transparent 65%) 100% 0 / 250% 100% no-repeat;
-
-    animation: glowSweep 3s ease-in-out infinite;
-}
-
-/* bright shine on the subject itself */
-.main-container .image::after{
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-
-    background: linear-gradient(
-        110deg,
-        transparent 40%,
-        rgba(255, 255, 255, 0.55) 50%,
-        transparent 40%
-    ) 100% 0 / 250% 100% no-repeat;
-
-    -webkit-mask: url("RNLD_MAIN.png") top left / 100% auto no-repeat;
-            mask: url("RNLD_MAIN.png") top left / 100% auto no-repeat;
-
-    mix-blend-mode: screen;
-    animation: glowSweep 3s ease-in-out infinite;
-}
-
-/* 100% -> 0% moves the band from LEFT to RIGHT */
-@keyframes glowSweep{
-    0%   { background-position: 100% 0; -webkit-mask-position: 100% 0; mask-position: 100% 0; }
-    60%  { background-position: 0% 0;   -webkit-mask-position: 0% 0;   mask-position: 0% 0; }
-    100% { background-position: 0% 0;   -webkit-mask-position: 0% 0;   mask-position: 0% 0; }
-}
-.main-container .image img{
-     width: 100%;
-}
-
-
-/* Gentle pulsing/breathing animation when hovering the photo */
-.main-container .image:hover{
-    animation: animate 2s ease-in-out infinite;
-}
-
-/* Keyframes used by the hover animation above (grow then shrink) */
-@keyframes animate{
-    0%{
-    scale: 1;
-}
-50%{
-    scale: 1.05;
-}
-
-1000%{
-    scale: 1;
-    }
-}
-
-/* Text block next to the hero photo (name, title, description) */
-.main-container .content{
-    color: rgb(253, 253, 253);
-    width: 40%;
-}
-
-.content h1{
-    font-size: clamp(3rem, 1rem + 5vw, 1.8rem);
-}
-
-/* Highlighted name/word inside the h1 */
-.content h1 span{
-    color: cyan;
-    text-shadow: 0 0 10px cyan;
-    font-size: 80px;
-}
-
-/* Typewriter-effect job title text (e.g. "Web Developer") */
-.content .typewriter{
-    font-size: clamp(1rem, 1rem + 5vw, 2.5rem);
-    font-weight: 600;
-    color: rgb(103, 194, 255);
-    font-style: italic;
-}
-
-.content .typewriter-text{
-    color: cyan;
-    text-shadow: 0 0 10px cyan;
-}
-
-.content p{
-    font-size: clamp(0.4rem , 0.2rem + 9vw, 1rem);
-    margin: 10px 0;
-}
-
-/* ===================================================
-   SOCIAL LINKS — round icon buttons (GitHub, LinkedIn, etc.)
-=================================================== */
-.social-links i{
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 3rem;
-    height: 3rem;
-    background-color: transparent;
-    border: 0.2rem solid cyan;
-    border-radius: 50%;
-    color: cyan;
-    margin: 5px 15px;
-    font-size: 1.5rem;
-    transition: 0.2s linear;
-}
-.social-links i:hover{
-    scale: 1.3;
-    color: black;
-    background-color: cyan;
-    filter: drop-shadow(0 0 10px cyan)
-}
-
-/* "Hire Me" / call-to-action button in the hero */
-.content button{
-    width: 50%;
-    height: 6vh;
-    margin: 20px;
-    background-color: cyan;
-    color: rgb(0, 0, 0);
-    border: none;
-    outline: none;
-    font-size: 200%;
-    font-weight: 700;
-    border-radius: 5px;
-    transition: 0.2s linear;
-}
-
-.content button:hover{
-    scale: 1.1;
-    color: cyan;
-    border: 2px solid cyan;
-    background-color: transparent;
-    font-weight: 700;
-    box-shadow: 0 0 40px cyan;
-    cursor: pointer;
-}
-
-/* ===================================================
-   ABOUT SECTION — bio, education, and experience block
-=================================================== */
-
-/* Generic content wrapper reused by every section (centers content, sets max width) */
-section .content{
-    width: 80%;
-    margin: 0px auto;
-    font-family: 'Poppins', sans-serif;
-}
-
-.about .about{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Section heading wrapper (e.g. "About Me", "My Skills") */
-section .title{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 80px;
-}
-
-/* The heading text itself, with decorative underlines added below */
-section .title span{
-    margin-top: 20px;
-    color: white;
-    font-size: 50px;
-    font-weight: 600;
-    position: relative;
-    padding-bottom: 8px;
-}
-
-/* --- Education entry styling (inside About section) --- */
-.about .right .education{
-    color: white;
-    margin: 20px 5;
-    border-left: 3px solid cyan;
-    padding-left: 15px;
-    font-size: 30px;
-    font-weight: 800;
-}
-
-.about .right .edu-year{
-    color: cyan;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 1px;
-}
-
-.about .right .edu-school{
-    color: rgb(250, 250, 250);
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 4px;
-}
-
-.about .right .edu-degree{
-    color: rgb(200, 200, 200);
-    font-size: 15px;
-    margin-top: 2px;
-    font-style: italic;
-}
-
-/* --- Work experience entry styling (inside About section) --- */
-.about .right .experience{
-    color: white;
-    margin: 10px 5;
-    border-left: 3px solid cyan;
-    padding-left: 15px;
-    font-size: 30px;
-    font-weight: 800;
-}
-
-.about .right .exp-year{
-    color: cyan;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 1px;
-}
-
-.about .right .company{
-    color: rgb(250, 250, 250);
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 4px;
-}
-
-.about .right .position{
-    color: rgb(200, 200, 200);
-    font-size: 15px;
-    font-style: italic;
-    margin-top: 2px;
-}
-
-/* Decorative underlines under every section title (::before = full line, ::after = shorter accent line) */
 section .title span::before,
-section .title span::after{
-    content: '';
-    position: absolute;
-    height: 3px;
-    width: 100%;
-    background-color: rgb(0, 100, 139);
-    left: 0;
-    bottom: 0;
+section .title span::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background: #00648b;
+}
+section .title span::after { bottom: -7px; left: 50%; width: 70%; transform: translateX(-50%); }
+
+section .topic { margin-bottom: 10px; color: #fafafa; font-size: 25px; font-weight: 500; }
+
+/* ===== ABOUT ===== */
+.about .left img { width: 200px; height: 200px; object-fit: cover; border-radius: 12px; }
+.about .right p { color: #fafafa; text-align: justify; }
+
+.about .education, .about .experience {
+  padding-left: 15px;
+  border-left: 3px solid cyan;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 800;
+}
+.about .edu-year, .about .exp-year { color: cyan; font-size: 14px; font-weight: 500; letter-spacing: 1px; }
+.about .edu-school, .about .company { margin-top: 4px; color: #fafafa; font-size: 18px; font-weight: 600; }
+.about .edu-degree, .about .position { margin-top: 2px; color: #c8c8c8; font-size: 15px; font-style: italic; }
+
+.about .content .right .icon {
+  width: 50px;
+  margin: 20px 0;
+  border-radius: 20%;
+  background: cyan;
+  color: #000;
+  font-size: 30px;
+  line-height: 50px;
+  text-align: center;
+  transition: all 1s ease;
 }
 
-section .title span::after{
-    bottom: -7px;
-    width: 70%;
-    left: 50%;
-    transform: translateX(-50%);
-}
+/* ===== SKILLS ===== */
+.skills-details .text { margin-bottom: 30px; }
+.skills-details p { color: #fff; text-align: justify; }
+.skills-details .experience .num { color: #fff; font-size: 80px; }
+.skills-details .experience .exp { margin: 0 8px; color: #fff; font-size: 18px; font-weight: 500; }
 
-/* Left column (photo) vs right column (text) layout in About */
-.about .about-details .left{
-    width: 45%;
-}
-.about {
-    background: rgba(0,0,0,0.5);
-}
-.about .left img{
-    height: 200px;
-    width: 200px;
-    object-fit: cover;
-    border-radius: 12px;
-}
+.skills-details .boxes { display: flex; flex-wrap: wrap; justify-content: space-between; }
+.skills-details .box { margin: 20px 0; width: calc(100% / 5 - 20px); text-align: center; }
+.skill .box .topic { color: #fff; font-size: 18px; }
 
-.about-details .right{
-    width: 55%;
+/* circular progress rings (--percent is animated by script.js) */
+.skill .circle {
+  --percent: 0;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: conic-gradient(cyan calc(var(--percent) * 1%), rgba(255, 255, 255, .15) 0);
+  filter: drop-shadow(0 0 8px cyan);
 }
+.skill .circle::before {                    /* inner dark circle -> turns the pie into a ring */
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  background: #0b0b0b;
+}
+.skill .circle .per { position: relative; color: cyan; font-size: 24px; font-weight: 600; }
 
-/* Small subheading used inside content blocks (e.g. "Who I Am") */
-section .topic{
-    color: rgb(250, 250, 250);
-    font-size: 25px;
-    font-weight: 500;
-    margin-bottom: 10px;
+/* ===== SERVICES ===== */
+.services .boxes { display: flex; flex-wrap: wrap; justify-content: space-between; }
+.services .boxes .box {
+  margin: 20px 0;
+  width: calc(100% / 3 - 20px);
+  padding: 30px 10px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px #000;
+  color: #fff;
+  text-align: center;
+  cursor: default;
+  transition: all .4s ease;
 }
-.about .right p{
-    color: rgb(250, 250, 250);
-    text-align: justify;
-    
-}
-
-.about .boxes .box:hover{
-    background: cyan;
-    color: rgb(0, 0, 0);
-}
-
-/* Icon badge style reused in the About section */
-.about .content .right .icon{
-    height: 90%;
-    width: 50px;
-    background-color: cyan;
-    border-radius: 20%;
-    text-align: center;
-    line-height: 50px;
-    font-size: 30px;
-    color: rgb(0, 0, 0);
-    margin: 20 auto 0px auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    transition: all 1s ease;
-
-}
-
-/* ===================================================
-   GENERIC BUTTON — reusable button style used across
-   multiple sections (e.g. "Download CV", "See More")
-=================================================== */
-section .button{
-    margin: 16px 0;
-}
-
-section .button button{
-    outline: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 25px;
-    font-weight: 400;
-    background-color: cyan;
-    color: rgb(0, 0, 0);
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: all 0.4s ease;
-}
-
-section .button button:hover{
-    border-color: cyan;
-    background-color: white;
-    color: rgb(6, 7, 7);
-}
-
-/* ===== SKILL LOADING RINGS ===== */
-.skills-details .circle,
-.skill .circle{
-    --percent: 0;
-    position: relative;
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 12px auto;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: conic-gradient(cyan calc(var(--percent) * 1%), rgba(255,255,255,0.15) 0);
-    filter: drop-shadow(0 0 8px cyan);
-}
-
-/* inner dark circle that turns the pie into a ring */
-.skill .circle::before{
-    content: '';
-    position: absolute;
-    inset: 10px;
-    border-radius: 50%;
-    background: #0b0b0b;
-}
-
-.skill .boxes .box .circle .per{
-    position: relative;
-    font-size: 24px;
-    font-weight: 600;
-    color: cyan;
-}
-
-.skill .boxes .box .topic{
-    font-size: 18px;
-    color: white;
-}
-/* ===================================================
-   SKILLS SECTION — skill bars / percentage boxes
-=================================================== */
-.skills .content{
-    padding: 40px 0;
-}
-.skill {
-    background: rgba(0,0,0,0.5);
-}
-.skills .skills-details{
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-
-/* Paragraph/description above the skill boxes */
-.skills-details .text{
-    width: 100%;
-    text-align: left;
-    margin-bottom: 30px;
-}
-.skills-details p{
-    color: white;
-    text-align: justify;
-}
-
-/* "Years of experience" stat block */
-.skills .skills-details .experience{
-    display: flex;
-    align-items: center;
-    margin: 0 10px;
-}
-.skills-details .experience .num{
-    color: white;
-    font-size: 80px;
-}
-.skills-details .experience .exp{
-    color: white;
-    margin-left: 20px;
-    font-size: 18px;
-    font-weight: 500;
-    margin: 0 8px;
-}
-
-/* Row of individual skill boxes (e.g. HTML, CSS, JS %) */
-.skills-details .boxes{
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-.skills-details .box{
-    margin: 20px 0;
-    width: calc(100% / 5 - 20px);
-    text-align: center;
-}
-.skills-details .skills-details.boxes.topic{
-    font-size: 20px;
-    color: cyan;
-}
-.skills-details .boxes .per{
-    font-size: 60px;
-    color: cyan;
-}
-
-/* ===================================================
-   SERVICES SECTION — grid of service cards (3 per row)
-=================================================== */
-.services .boxes{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-.services {
-    background: rgba(0,0,0,0.5);
-}
-.services .boxes .box{
-    margin: 20px 0;
-    width: 100%;
-    width: calc(100% / 3 - 20px);
-    text-align: center;
-    border-radius: 12px;
-    padding: 30px 10px;
-    box-shadow: 0 5px 10px black;
-    cursor: default;
-    color: white;
-    transition: all 0.4s ease;
-}
-
-/* Card highlight effect on hover */
-.services .boxes .box:hover{
-    background: cyan;
-    color: rgb(0, 0, 0);
-}
-.services .boxes .box .icon{
-    height: 50px;
-    width: 50px;
-    background-color: cyan;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 50px;
-    font-size: 18px;
-    color: rgb(0, 0, 0);
-    margin: 0 auto 10px auto;
-    transition: all 0.4s ease;
-}
-.boxes .boxes:hover .icon{
-    background-color: white;
-    color: cyan;
+.services .boxes .box:hover { background: cyan; color: #000; }
+.services .boxes .box .icon {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: cyan;
+  color: #000;
+  font-size: 18px;
+  line-height: 50px;
+  text-align: center;
 }
 .services .boxes .box:hover .topic,
-.services .boxes .box:hover p{
-    color: rgb(3, 2, 2);
-    transition: all 0.4s ease;
+.services .boxes .box:hover p { color: #050404; transition: all .4s ease; }
+
+/* ===== GALLERY ===== */
+.portfolio-title { margin: 50px 0 20px; text-align: center; }
+.portfolio-title span { color: cyan; font-size: 50px; font-weight: 600; letter-spacing: 1px; }
+.portfolio-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  overflow-x: auto;
 }
-.services .boxes .boc:hover .topic,
-.services .boxes .box:hover p{
-    color: rgb(7, 6, 6);
+.portfolio-item {
+  width: calc(100% / 5 - 15px);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px #000;
 }
+.portfolio-item img { width: 100%; height: 100%; object-fit: cover; transition: .3s ease; }
+.portfolio-item:hover { box-shadow: 0 0 50px cyan; }
+.portfolio-item:hover img { scale: 1.2; cursor: pointer; }
 
-/* ===================================================
-   PORTFOLIO / "MY WORK" GALLERY — row of project images
-=================================================== */
-.portfolio-title{
-    text-align: center;
-    margin: 50px 0 20px 0;
+/* ===== CONTACT ===== */
+.contact .content { padding: 30px 0; }
+.contact .text { width: 80%; margin: auto; text-align: center; }
+.contact .text p { color: #fff; }
+
+/* ===== FOOTER ===== */
+footer { padding: 15px 0; background: cyan; text-align: center; }
+footer .text span { color: #000; font-size: 17px; }
+footer .text span a { color: #005688; font-weight: 500; }
+footer .text span a:hover { text-decoration: underline; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 968px) {
+  nav .logo img { position: absolute; top: 16px; left: 25px; }
+  .nav-container .links { display: none; }          /* hamburger menu takes over */
+
+  section .main-container { padding-left: 0; flex-direction: column; }
+  .main-container .content { margin-top: 20px; width: 80%; }
+  .social-links i { width: 2.5rem; height: 2.5rem; }
+
+  .skills-details .text { margin-bottom: 50px; }
+  .skills-details .boxes { justify-content: center; }
+  .services .boxes .box { width: 100%; }
+  .content .text { width: 100%; }
 }
-.portfolio-title span{
-    color: cyan;
-    font-size: 50px;
-    font-weight: 600;
-    letter-spacing: 1px;
+@media (max-width: 900px) {
+  .about .left img { width: 350px; height: 350px; }
 }
-
-/* Horizontal scrollable strip of gallery thumbnails */
-.portfolio-gallery{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    overflow-x: auto;
-}
-
-/* Individual gallery thumbnail (square, rounded corners) */
-.portfolio-item{
-    width: calc(100% / 5 - 15px);
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 5px 10px black;
-}
-
-.portfolio-item img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: 0.3s ease;
-}
-
-/* Glow + zoom-in effect on hover, and cursor change to signal it's clickable */
-.portfolio-item:hover{
-    box-shadow: 0 0 50px cyan;
-}
-.portfolio-item:hover img{
-    scale: 1.2;
-    cursor: pointer;
-}
-
-
-
-/* ===================================================
-   CONTACT ME SECTION
-=================================================== */
-.contact{
-    background: rgba(0,0,0,0.5);
-}
-.contact .content{
-    margin: 0 auto;
-    padding: 30px 0;
-}
-.contact .text{
-    width: 80%;
-    text-align: center;
-    margin: auto;
-}
-.contact .text p{
-    color: white;
-}
-
-/* ===================================================
-   FOOTER — bottom bar with copyright text
-=================================================== */
-footer{
-    background:cyan;
-    padding: 15px 0;
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-}
-footer .text span{
-    font-size: 17px;
-    font-weight: 400;
-    color: rgb(0, 0, 0);
-}
-footer .text span a{
-    font-weight: 500;
-    color: rgb(0, 86, 136);
-}
-footer .text span a:hover{
-    text-decoration: underline;
-}
-
-/* Floating "back to top" button (fixed to bottom-right corner) */
-.scroll-button a{
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    color: white;
-    background:cyan;
-    padding: 7px 12px;
-    font-size: 18px;
-    border-radius: 6px;
-    box-shadow: black;
-    display: none;
-}
-
-
-/* ===================================================
-   RESPONSIVE STYLES — MEDIUM SCREENS (<= 1000px)
-   Stacks About section into a single column
-=================================================== */
-@media (max-width: 1000px){
-.about .about-details{
-    justify-content: center;
-    flex-direction: column;
-}
-.about .about-details .left{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-.about-details .right{
-    width: 90%;
-    margin: 40px 0;
-}
-.services .boxes .box{
-    margin: 20px 0;
-    width: calc(100% / 2 -20px);
-    }
-}
-
-/* ===================================================
-   RESPONSIVE STYLES — (<= 900px)
-   Shrinks the About profile photo
-=================================================== */
-@media (max-width: 900px){
-    .about .left img{
-        height: 350px;
-        width: 350px;
-    }
-    }
-
-/* ===================================================
-   RESPONSIVE STYLES — TABLET/MOBILE (<= 968px)
-   Switches to the hamburger menu, stacks hero content,
-   and makes Skills/Services sections single-column
-=================================================== */
-@media (max-width: 968px){
-
-    nav .logo img{
-        position: absolute;
-        top: 16px;
-        left: 15px;
-        font-size: 1.5rem;
-    }
-
-
-    section .main-container {
-        padding-left: 0px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Hide desktop links, rely on hamburger + dropdown instead */
-    .nav-container .links{
-        display: none;
-    }
-
-    .hamburg,
-    .cancel{
-        opacity: 100;
-        pointer-events: visible;
-    }
-
-    .main-container .content{
-        margin-top: 20px;
-        width: 80%;
-    }
-
-    .social-links i{
-        width: 2.5rem;
-        height: 2.5rem;
-        font-size: 1.5rem;
-    }
-
-    .main-container image{
-        z-index: -1;
-        width: 50%;
-        height: 60%;
-    }
-
-    .skills .skills-details{
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-    }
-    .skills-details .text{
-        width: 100%;
-        margin-bottom: 50px;
-    }
-    .skills-details .boxes{
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        }
-
-    .services .boxes .box{
-        margin: 20px 0;
-        width: 100%;
-}
-
-.content .text{
-    width: 100%;
-}
-}
-
-/* ===================================================
-   RESPONSIVE STYLES — SMALL PHONES (<= 768px)
-   Fine-tunes hero image/button spacing and skill % size
-=================================================== */
-@media (max-width: 768px){
-    main-container .image{
-        width: 50px;
-        height: 60%;
-        margin-bottom: 0px;
-    }
-
-    .main-container .content{
-        width: 80%;
-    }
-
-    .main-container button{
-        margin-top: 15px;
-    }
-
-    .skills-details .boxes .per{
-        font-size: 50px;
-        color:cyan;
-    } 
+@media (max-width: 768px) {
+  .main-container button { margin-top: 15px; }
 }

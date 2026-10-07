@@ -1,33 +1,28 @@
+// Scroll animations (global duration, so no data-aos-duration="1500" needed on every element)
+AOS.init({ duration: 1500, offset: 0, once: true });
+
+// Mobile menu
 const dropdown = document.querySelector('.dropdown');
- 
-function hamburg() {
-  dropdown.style.transform = 'translateY(0px)';
-}
- 
+function hamburg() { dropdown.classList.add('open'); }
+function cancel()  { dropdown.classList.remove('open'); }
 
-function cancel() {
-  dropdown.style.transform = 'translateY(-500px)';
-}
- const rings = document.querySelectorAll('.circle');
-
+// Skill rings: count up to data-percent when scrolled into view
 const ringObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
+  entries.forEach(({ isIntersecting, target: ring }) => {
+    if (!isIntersecting) return;
 
-    const ring = entry.target;
-    const target = Number(ring.dataset.percent);
+    const goal = Number(ring.dataset.percent);
     const label = ring.querySelector('.per');
-    let current = 0;
+    let n = 0;
 
     const timer = setInterval(() => {
-      current++;
-      ring.style.setProperty('--percent', current);
-      label.textContent = current + '%';
-      if (current >= target) clearInterval(timer);
+      ring.style.setProperty('--percent', ++n);
+      label.textContent = n + '%';
+      if (n >= goal) clearInterval(timer);
     }, 20);
 
     ringObserver.unobserve(ring);
   });
 }, { threshold: 0.5 });
 
-rings.forEach(ring => ringObserver.observe(ring));
+document.querySelectorAll('.circle').forEach(ring => ringObserver.observe(ring));
