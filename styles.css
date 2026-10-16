@@ -361,7 +361,7 @@ footer .text span a:hover { text-decoration: underline; }
   nav .logo img { position: absolute; top: 16px; left: 25px; }
   .nav-container .links { display: none; }          /* hamburger menu takes over */
 
-  section .main-container { padding-left: 0; flex-direction: column; }
+  section .main-container { padding-left: 0; flex-direction: column;  }
   .main-container .content { margin-top: 20px; width: 80%; }
   .social-links i { width: 2.5rem; height: 2.5rem; }
 
@@ -375,4 +375,5 @@ footer .text span a:hover { text-decoration: underline; }
 }
 @media (max-width: 768px) {
   .main-container button { margin-top: 15px; }
+  .nav-container .links { display: none;}
 }
